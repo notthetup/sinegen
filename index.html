@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title> Sine-Gen</title>
+  </head>
+  <body>
+    <div>
+      Freqency:
+      <input id="fSlider" type="range" min="1000" max="48000" step="1000" value="1000"/>
+      <label id="fLabel">1000</label>
+    </div>
+    <br />
+    <div>
+      Gain:
+      <input id="gSlider" type="range" min="0" max="1" step="0.01" value="0.5"/>
+      <label id="gLabel">0.5</label>
+    </div>
+  </body>
+  <script>
+  "use strict";
+  window.addEventListener('load', function(){
+    var fSlider = document.querySelector('#fSlider');
+    var fLabel = document.querySelector('#fLabel');
+
+    var gSlider = document.querySelector('#gSlider');
+    var gLabel = document.querySelector('#gLabel');
+
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
+    var ac = new AudioContext();
+
+    var osc = ac.createOscillator();
+    var gain = ac.createGain();
+    osc.connect(gain);
+    gain.connect(ac.destination);
+
+    osc.frequency.value = 1000;
+    gain.gain.value = 0.5;
+    osc.start(0);
+
+    fSlider.addEventListener('input', function(){
+      fLabel.innerHTML = fSlider.value;
+      osc.frequency.value = parseFloat(fSlider.value);
+    });
+
+    gSlider.addEventListener('input', function(){
+      gLabel.innerHTML = gSlider.value;
+      gain.gain.value = parseFloat(gSlider.value);
+    });
+
+  });
+  </script>
+</html>
